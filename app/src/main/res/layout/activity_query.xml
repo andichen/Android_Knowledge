@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.QueryActivity">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/include_common_text_title" />
+
+    <TextView
+        android:id="@+id/click_MainActivity"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/title"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="MainActivity(涉及到网络，弹窗框，recycleview上啦加载，蓝牙)" />
+
+    <TextView
+        android:id="@+id/click_DataBaseActivty"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/click_MainActivity"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="DataBaseActivity(数据库相关，原生数据库，GreenDao框架数据库)" />
+
+    <TextView
+        android:id="@+id/click_DraggRecycleview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/click_DataBaseActivty"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="DraggRecycleviewActivity(仿支付宝拖拽编辑recycleview)" />
+
+    <TextView
+        android:id="@+id/click_BaseRecyclerViewAdapterHelperActivity"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/click_DraggRecycleview"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="recycleview依赖库(com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4)" />
+
+
+    <com.example.mlmmusic.util.customview.AttachButton
+        android:id="@+id/attachbutton_view"
+        android:background="@color/color_666666"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        app:customIsAttach="true"
+        app:customIsDrag="true" />
+</RelativeLayout>
