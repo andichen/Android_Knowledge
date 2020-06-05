@@ -50,6 +50,21 @@
                 <action android:name="aaaaa" />
             </intent-filter>
         </receiver>
+
+
+        <receiver android:name="com.example.keepalivelibrary.receiver.NotificationClickReceiver" />
+
+        <activity android:name="com.example.keepalivelibrary.activity.OnePixelActivity" />
+
+        <service android:name="com.example.keepalivelibrary.service.LocalService"
+            android:process=":localservice"/>
+        <service android:name="com.example.keepalivelibrary.service.HideForegroundService" />
+        <service
+            android:name="com.example.keepalivelibrary.service.JobHandlerService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name="com.example.keepalivelibrary.service.RemoteService"
+            android:process=":remote" />
     </application>
 
 </manifest>

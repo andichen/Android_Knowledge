@@ -64,4 +64,6 @@ dependencies {
     implementation 'ywl.ywl5320:libmusic:1.2.6'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
 
+    // 进程保护
+    implementation project(path: ':keepalivelibrary')
 }
