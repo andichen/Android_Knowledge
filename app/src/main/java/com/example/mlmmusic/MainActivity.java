@@ -13,8 +13,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -26,7 +24,7 @@ import com.example.keepalivelibrary.KeepLive;
 import com.example.keepalivelibrary.config.ForegroundNotification;
 import com.example.keepalivelibrary.config.ForegroundNotificationClickListener;
 import com.example.keepalivelibrary.config.KeepLiveService;
-import com.example.mlmmusic.activity.PlayActivity;
+import com.example.mlmmusic.ui.activity.PlayActivity;
 import com.example.mlmmusic.adapter.HeaderAndFooterAdapter;
 import com.example.mlmmusic.adapter.LiveListAdapter;
 import com.example.mlmmusic.base.BaseMusicActivity;
@@ -50,7 +48,6 @@ import java.util.List;
 import java.util.Set;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -84,7 +81,7 @@ public class MainActivity extends BaseMusicActivity {
 //        if (PrivacySettingHelper.getPrivacySettings(this).getIsKeepalive() == 1) {
 //            initKeepLive();
 //        }
-        initKeepLive();
+//        initKeepLive();
         // 注册这个 BroadcastReceiver蓝牙用的
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(mReceiver, filter);
@@ -167,7 +164,9 @@ public class MainActivity extends BaseMusicActivity {
             @Override
             public void onLoadMore() {
                 if (!isLoading) {
-                    getLiveList2();
+                    if (hasLoadMsg) {
+                        getLiveList2();
+                    }
                 }
             }
 
@@ -185,18 +184,22 @@ public class MainActivity extends BaseMusicActivity {
         });
     }
 
+    private boolean hasLoadMsg = true;
     private void getLiveList2() {
         tvLoadMsg.setText("正在加载...");
         SubjectApi.getInstance().getLiveList("", channelPlaceId, pageSize, currentPage, new HttpSubscriber<List<LiveChannelBean>>(new SubscriberOnListener<List<LiveChannelBean>>() {
 
             @Override
             public void onSucceed(List<LiveChannelBean> data) {
+                hasLoadMsg = true;
                 if (data != null) {
                     if (currentPage == 1) {
                         datas.clear();
                     }
                     if (data.size() == 0) {
                         tvLoadMsg.setText("没有更多了");
+                        hasLoadMsg = false;
+
                     } else {
                         tvLoadMsg.setText("加载更多");
                         currentPage++;

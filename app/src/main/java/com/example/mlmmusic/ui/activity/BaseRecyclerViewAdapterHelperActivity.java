@@ -1,4 +1,4 @@
-package com.example.mlmmusic.activity;
+package com.example.mlmmusic.ui.activity;
 
 import android.os.Bundle;
 

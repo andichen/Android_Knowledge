@@ -1,21 +1,14 @@
-package com.example.mlmmusic.activity;
+package com.example.mlmmusic.ui.activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import com.example.mlmmusic.MainActivity;
 import com.example.mlmmusic.R;
 import com.example.mlmmusic.base.BaseActivity;
 import com.example.mlmmusic.dialog.NormalAskDialog;
@@ -168,7 +161,7 @@ public class SplashActivity extends BaseActivity implements PermissionUtil.OnReq
 
 
 /*
-package com.example.mlmmusic.activity;
+package com.example.mlmmusic.ui.activity;
 
 import android.Manifest;
 import android.content.Intent;

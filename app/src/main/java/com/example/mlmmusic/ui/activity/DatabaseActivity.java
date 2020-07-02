@@ -1,11 +1,11 @@
-package com.example.mlmmusic.activity;
+package com.example.mlmmusic.ui.activity;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+
 
 import com.example.mlmmusic.R;
 import com.example.mlmmusic.base.BaseActivity;

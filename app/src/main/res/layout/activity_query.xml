@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.QueryActivity">
+    tools:context=".ui.activity.QueryActivity">
 
     <include
         android:id="@+id/title"
@@ -51,13 +51,32 @@
         android:paddingRight="10dp"
         android:text="recycleview依赖库(com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4)" />
 
+    <TextView
+        android:id="@+id/LoadRecycleActivity"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/click_BaseRecyclerViewAdapterHelperActivity"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="上啦加载下啦刷新" />
+    <TextView
+        android:id="@+id/CoordinatorLayoutActivity"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/LoadRecycleActivity"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="CoordinatorLayoutActivity" />
+
 
     <com.example.mlmmusic.util.customview.AttachButton
         android:id="@+id/attachbutton_view"
-        android:background="@color/color_666666"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
+        android:background="@color/color_666666"
         app:customIsAttach="true"
         app:customIsDrag="true" />
 </RelativeLayout>

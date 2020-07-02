@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="bottom|center_horizontal"
     android:orientation="vertical"
-    tools:context=".activity.SplashActivity">
+    tools:context=".ui.activity.SplashActivity">
 
     <ProgressBar
         android:id="@+id/pb_load"

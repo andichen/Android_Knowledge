@@ -1,4 +1,4 @@
-package com.example.mlmmusic.activity;
+package com.example.mlmmusic.ui.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -27,10 +27,9 @@ public class QueryActivity extends BaseActivity {
         setBackView();
 
 
-
     }
 
-    @OnClick({R.id.click_MainActivity, R.id.click_DataBaseActivty, R.id.click_DraggRecycleview,R.id.click_BaseRecyclerViewAdapterHelperActivity})
+    @OnClick({R.id.click_MainActivity, R.id.click_DataBaseActivty, R.id.click_DraggRecycleview, R.id.click_BaseRecyclerViewAdapterHelperActivity, R.id.LoadRecycleActivity,R.id.CoordinatorLayoutActivity})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.click_MainActivity:
@@ -44,6 +43,12 @@ public class QueryActivity extends BaseActivity {
                 break;
             case R.id.click_BaseRecyclerViewAdapterHelperActivity:
                 startSystemActivity(this, BaseRecyclerViewAdapterHelperActivity.class);
+                break;
+            case R.id.LoadRecycleActivity:
+                startSystemActivity(this, LoadRecycleActivity.class);
+                break;
+            case R.id.CoordinatorLayoutActivity:
+                startSystemActivity(this, CoordinatorLayoutActivity.class);
                 break;
 
         }
