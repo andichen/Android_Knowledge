@@ -23,7 +23,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.activity.CoordinatorLayoutActivity"></activity>
+        <activity android:name=".ui.activity.RxJavaActivity"></activity>
+        <activity android:name=".ui.activity.CoordinatorLayoutActivity" />
         <activity android:name=".ui.activity.LoadRecycleActivity" />
         <activity android:name=".ui.activity.BaseRecyclerViewAdapterHelperActivity" />
         <activity android:name=".draggrecycle.DraggRecycleviewActivity" />

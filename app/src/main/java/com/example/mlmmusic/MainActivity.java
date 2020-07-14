@@ -103,7 +103,7 @@ public class MainActivity extends BaseMusicActivity {
                 }
             }
         });
-//        getLiveList();  //没封装的请求(很简单的封装)
+        getLiveList();  //没封装的请求(很简单的封装)
         getLiveList2();  //优化网络请求的请求
         getLocalData(); //
 

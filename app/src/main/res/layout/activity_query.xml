@@ -60,6 +60,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="上啦加载下啦刷新" />
+
     <TextView
         android:id="@+id/CoordinatorLayoutActivity"
         android:layout_width="match_parent"
@@ -69,6 +70,16 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="CoordinatorLayoutActivity" />
+
+    <TextView
+        android:id="@+id/RxJavaActivity"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/CoordinatorLayoutActivity"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="RxJavaActivity" />
 
 
     <com.example.mlmmusic.util.customview.AttachButton

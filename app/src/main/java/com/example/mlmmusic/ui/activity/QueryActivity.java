@@ -29,7 +29,7 @@ public class QueryActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.click_MainActivity, R.id.click_DataBaseActivty, R.id.click_DraggRecycleview, R.id.click_BaseRecyclerViewAdapterHelperActivity, R.id.LoadRecycleActivity,R.id.CoordinatorLayoutActivity})
+    @OnClick({R.id.click_MainActivity, R.id.click_DataBaseActivty, R.id.click_DraggRecycleview, R.id.click_BaseRecyclerViewAdapterHelperActivity, R.id.LoadRecycleActivity, R.id.CoordinatorLayoutActivity, R.id.RxJavaActivity})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.click_MainActivity:
@@ -49,6 +49,9 @@ public class QueryActivity extends BaseActivity {
                 break;
             case R.id.CoordinatorLayoutActivity:
                 startSystemActivity(this, CoordinatorLayoutActivity.class);
+                break;
+            case R.id.RxJavaActivity:
+                startSystemActivity(this, RxJavaActivity.class);
                 break;
 
         }
