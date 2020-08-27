@@ -54,9 +54,14 @@ public class HttpMethod {
 
 
     public static OkHttpClient genericClient() {
+        //loggin one
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        // set your desired log level
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        //loggin two
+        com.example.mlmmusic.http.interceptor.HttpLoggingInterceptor httpLoggingInterceptor = new com.example.mlmmusic.http.interceptor.HttpLoggingInterceptor("clf---", true);
+        httpLoggingInterceptor.setLevel(com.example.mlmmusic.http.interceptor.HttpLoggingInterceptor.Level.BODY);
+
         OkHttpClient httpClient = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
                     @Override
@@ -71,7 +76,8 @@ public class HttpMethod {
                     }
 
                 }).
-//                        addInterceptor(logging).
+                        addInterceptor(logging).
+//                        addInterceptor(httpLoggingInterceptor).
         connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
                 .proxy(Proxy.NO_PROXY)//不用代理（防止代理抓包）

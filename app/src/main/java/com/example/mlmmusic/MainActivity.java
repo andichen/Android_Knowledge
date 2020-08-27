@@ -1,12 +1,15 @@
 package com.example.mlmmusic;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +27,7 @@ import com.example.keepalivelibrary.KeepLive;
 import com.example.keepalivelibrary.config.ForegroundNotification;
 import com.example.keepalivelibrary.config.ForegroundNotificationClickListener;
 import com.example.keepalivelibrary.config.KeepLiveService;
+import com.example.mlmmusic.http.httpentity.HttpResult;
 import com.example.mlmmusic.ui.activity.PlayActivity;
 import com.example.mlmmusic.adapter.HeaderAndFooterAdapter;
 import com.example.mlmmusic.adapter.LiveListAdapter;
@@ -40,18 +44,42 @@ import com.example.mlmmusic.http.serviceapi.SubjectApi;
 import com.example.mlmmusic.http.subscribers.HttpSubscriber;
 import com.example.mlmmusic.http.subscribers.SubscriberOnListener;
 import com.example.mlmmusic.log.MyLog;
+import com.example.mlmmusic.util.AESEncrypt.RSAUtil;
 import com.example.mlmmusic.util.RxBus;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Cache;
+import okhttp3.CacheControl;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public class MainActivity extends BaseMusicActivity {
 
@@ -75,6 +103,7 @@ public class MainActivity extends BaseMusicActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        onSaveInstanceState(savedInstanceState);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // 启动保活
@@ -88,7 +117,11 @@ public class MainActivity extends BaseMusicActivity {
 
 //        ButterKnife.bind(this);
         setTheme(R.style.AppTheme_Launcher);
-        setTitle("钱大掌柜");
+        setTitle("钱" +
+                "" +
+                "大掌柜" +
+                "乐乐，我们还是分开吧，我真的没有那么的爱你了，更不想对我们的爱情不忠，我们的未来很渺茫，早点分开是最好的决定，分手的原因在于我" +
+                "是我对不起你，是我太渣了，你也不要来找我了，我也不会见你的，这种爱情不值得你去守护，坚强一点，千万不要为不值得你爱的人掉眼泪这世界没有我你一样很精彩只是陪你的人不再是我了，再也不见了");
         setRightView(R.mipmap.icon_more);
         showDadaLoad();
         initAdapter();
@@ -119,6 +152,101 @@ public class MainActivity extends BaseMusicActivity {
             }
         });
 
+
+        //RSA加密：非对称加密
+        KeyPair keyPair = RSAUtil.generateRSAKeyPair(2048);
+        PublicKey aPublic = keyPair.getPublic();  //产生公钥
+        PrivateKey aPrivate = keyPair.getPrivate(); //产生私钥
+
+
+        String clearText01 = "大家好，我是陈龙飞！"; // 原数据
+        String encryptDataByPublicKey = RSAUtil.encryptDataByPublicKey(clearText01.getBytes(), aPublic);  //公钥加密
+        String decryptToStrByPrivate = RSAUtil.decryptToStrByPrivate(encryptDataByPublicKey, aPrivate); //私钥解密
+
+        Log.i("clf_", "需要加密的数据是1：" + clearText01 + "\n" + "  公钥加密：" + encryptDataByPublicKey + "\n" + " 私钥解密结果： " + decryptToStrByPrivate);
+
+
+        String encryptDataByPrivateKey = RSAUtil.encryptDataByPrivateKey(clearText01.getBytes(), aPrivate); //私钥加密
+        String decryptedToStrByPublicKey = RSAUtil.decryptedToStrByPublicKey(encryptDataByPrivateKey, aPublic); //公钥解密
+
+        Log.i("clf_", "需要加密的数据是2：" + clearText01 + "\n" + "  私钥加密：" + encryptDataByPrivateKey + "\n" + " 公钥解密结果： " + decryptedToStrByPublicKey);
+
+        //ESA加密： 对称加密
+
+//        Base64Decoder
+
+        //这又是一种方式：
+        //公钥加密 私钥解密
+        try {
+            byte[] publicstring = RSAUtil.encryptByPublicKey(clearText01.getBytes(), aPublic.getEncoded());
+            byte[] privatestring = RSAUtil.decryptByPrivateKey(publicstring, aPrivate.getEncoded());
+
+            Log.i("clf_", "需要加密的数据是3：" + clearText01 + "\n" + "  公钥加密：" + new String(publicstring) + "\n" + " 私钥解密结果： " + new String(privatestring));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //私钥加密 公钥解密
+
+        try {
+            byte[] privatestring2 = RSAUtil.encryptByPrivateKey(clearText01.getBytes(), aPrivate.getEncoded());
+            byte[] publicstring = RSAUtil.decryptByPublicKey(privatestring2, aPublic.getEncoded());
+            Log.i("clf_", "需要加密的数据是4：" + clearText01 + "\n" + "  私钥加密：" + new String(privatestring2) + "\n" + " 公钥解密结果： " + new String(publicstring));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        LeaveRequest request = LeaveRequest.builder().leaveDays(20).name("小明").build();
+//
+//
+//        AbstractLeaveHandler directLeaderLeaveHandler = new DirectLeaderLeaveHandler("县令");
+//        DeptManagerLeaveHandler deptManagerLeaveHandler = new DeptManagerLeaveHandler("知府");
+//        GManagerLeaveHandler gManagerLeaveHandler = new GManagerLeaveHandler("京兆尹");
+//
+//        directLeaderLeaveHandler.setNextHandler(deptManagerLeaveHandler);
+//        deptManagerLeaveHandler.setNextHandler(gManagerLeaveHandler);
+//
+//        directLeaderLeaveHandler.handlerRequest(request);
+
+
+        //java 动态代理
+//        System.getProperties().setProperty("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
+
+        HelloInterface hello = new Hello();
+//        hello.sayHello();
+        ProxyHandler proxyHandler = new ProxyHandler(hello);
+        HelloInterface newProxyInstance = (HelloInterface) Proxy.newProxyInstance(hello.getClass().getClassLoader(), hello.getClass().getInterfaces(), proxyHandler);
+        newProxyInstance.sayHello();
+        //梦醒时分笑嘻嘻，望去归来意尤在，故若将人存梦中，恐得梦舟丹得来.
+
+    }
+
+    private interface HelloInterface {
+        void sayHello();
+    }
+
+    private class Hello implements HelloInterface {
+
+        @Override
+        public void sayHello() {
+            System.out.println("Hello,陈龙飞");
+        }
+    }
+
+    private class ProxyHandler implements InvocationHandler {
+
+        private Object object;
+        private ProxyHandler(Object object) {
+            this.object = object;
+        }
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            System.out.println("Before invoke "  + method.getName());
+            Object invoke = method.invoke(object, args); //会调用原方法，不如hello重的sayhello
+            System.out.println("After invoke " + method.getName());
+            return invoke;
+        }
     }
 
     private ArrayList<RxBus> rxBusList = new ArrayList<>();
@@ -185,6 +313,7 @@ public class MainActivity extends BaseMusicActivity {
     }
 
     private boolean hasLoadMsg = true;
+
     private void getLiveList2() {
         tvLoadMsg.setText("正在加载...");
         SubjectApi.getInstance().getLiveList("", channelPlaceId, pageSize, currentPage, new HttpSubscriber<List<LiveChannelBean>>(new SubscriberOnListener<List<LiveChannelBean>>() {
@@ -236,6 +365,13 @@ public class MainActivity extends BaseMusicActivity {
 
     }
 
+//    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        Context applicationContext2 = getApplicationContext();  //错误的调用
+//        super.attachBaseContext(newBase);
+//        Context applicationContext = getApplicationContext();
+//        Log.i("application:", applicationContext2.toString() + "  ....  " + applicationContext.toString());
+//    }
 
     private void getLocalData() {
         SubjectApi.getInstance().getLivePlace("", new HttpSubscriber<>(new SubscriberOnListener<List<PlaceBean>>() {
@@ -309,6 +445,14 @@ public class MainActivity extends BaseMusicActivity {
 
     @SuppressLint("CheckResult")
     private void getLiveList() {
+        Context context = getApplicationContext();
+        MyApplication application = (MyApplication) getApplication();
+
+        Log.i("application:" , context.toString() + "  ....  " + application.toString());
+
+
+//        Context instance = MyApplication.getInstance();
+
         NetWorkManager.getInstance(); //这个可以在MyAllpication中初始化
         //没封装的请求
         NetWorkManager.getRequest().getLiveByParam("", channelPlaceId, pageSize, currentPage)
@@ -326,11 +470,111 @@ public class MainActivity extends BaseMusicActivity {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         int a = 0;
-
                     }
                 });
+
+
+//        OkHttpClient okHttpClient = new OkHttpClient();
+//        Request request = new Request.Builder().url("http://pacc.radio.cn/").build();
+//        Call call = okHttpClient.newCall(request);
+//        call.enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//
+//            }
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//            }
+//        });
+
+//        Response response = null;
+//        try {
+//            response = call.execute();
+//            if (response.isSuccessful()) {
+//                String s = response.body().string();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+
+
+// 实例化过程和请求网络数据
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://pacc.radio.cn/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        GitHubService gitHubApi = retrofit.create(GitHubService.class);
+        retrofit2.Call<HttpResult<List<PlaceBean>>> calll = gitHubApi.getLivePlace("");
+
+        calll.enqueue(new retrofit2.Callback<HttpResult<List<PlaceBean>>>() {
+            @Override
+            public void onResponse(retrofit2.Call<HttpResult<List<PlaceBean>>> call, retrofit2.Response<HttpResult<List<PlaceBean>>> response) {
+
+                Log.i("clf;", response.body().getStatus() + "");
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<HttpResult<List<PlaceBean>>> call, Throwable t) {
+
+            }
+        });
+
+
+//        String url = "http://www.imooc.com/courseimg/s/cover005_s.jpg";
+//
+////配置缓存的路径，和缓存空间的大小
+//        Cache cache = new Cache(new File("/Users/zeal/Desktop/temp"), 10 * 10 * 1024);
+//
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .readTimeout(15, TimeUnit.SECONDS)
+//                .writeTimeout(15, TimeUnit.SECONDS)
+//                .connectTimeout(15, TimeUnit.SECONDS)
+//                //打开缓存
+//                .cache(cache)
+//                .build();
+//
+//        final Request request = new Request.Builder()
+//                .url(url)
+//                //request 请求单独配置缓存策略
+//                //noCache()： 就算是本地有缓存，也不会读缓存，直接访问服务器
+//                //noStore(): 不会缓存数据，直接访问服务器
+//                //onlyIfCached():只请求缓存中的数据，不靠谱
+//                .cacheControl(new CacheControl.Builder().build())
+//                .build();
+//        Call call = okHttpClient.newCall(request);
+//
+//        Response response = null;
+//        try {
+//            response = call.execute();
+//            response.body().string();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+////读取数据
+//
+//
+//        System.out.println("network response:" + response.networkResponse());
+//        System.out.println("cache response:" + response.cacheResponse());
+//
+////在创建 cache 开始计算
+//        System.out.println("cache hitCount:" + cache.hitCount());//使用缓存的次数
+//        System.out.println("cache networkCount:" + cache.networkCount());//使用网络请求的次数
+//        System.out.println("cache requestCount:" + cache.requestCount());//请求的次数
     }
 
+    // 定义一个接口
+    public interface GitHubService {
+        /**
+         * 获取省市台编号
+         * @param token
+         * @return
+         */
+        @GET("channels/getliveplace")
+        retrofit2.Call<HttpResult<List<PlaceBean>>> getLivePlace(@Query("token") String token);
+    }
 
     @Override
     protected void onDestroy() {
@@ -417,6 +661,7 @@ public class MainActivity extends BaseMusicActivity {
             }
         }
     };
+
     private void initKeepLive() {
         // 定义前台服务的默认样式。即标题、描述和图标
         ForegroundNotification foregroundNotification = new ForegroundNotification("IM核心", "进程守护中", R.mipmap.icon,

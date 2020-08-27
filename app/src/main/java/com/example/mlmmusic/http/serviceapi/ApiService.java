@@ -11,7 +11,9 @@ import java.util.List;
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -48,4 +50,12 @@ public interface ApiService {
      */
     @GET("channels/getliveplace")
     Observable<HttpResult<List<PlaceBean>>> getLivePlace(@Query("token") String token);
+
+
+    //特殊API接口单独加入请求头
+    @Headers({ "Accept: application/vnd.github.v3.full+json", "User-Agent: Retrofit-your-App"})
+    @GET("users/{username}")
+    Call<Object>   getUser(@Path("username") String username);
+
+
 }

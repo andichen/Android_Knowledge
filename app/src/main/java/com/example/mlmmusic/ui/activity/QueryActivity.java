@@ -1,5 +1,6 @@
 package com.example.mlmmusic.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -33,6 +34,7 @@ public class QueryActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.click_MainActivity:
+//                startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 startSystemActivity(this, MainActivity.class);
                 break;
             case R.id.click_DataBaseActivty:

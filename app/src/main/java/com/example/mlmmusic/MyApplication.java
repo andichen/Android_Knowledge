@@ -13,6 +13,7 @@ public class MyApplication extends Application {
     private static MyApplication instance;
     private Long token;
 
+    //Application全局只有一个，它本身就已经是单例了，无需再用单例模式去为它做多重实例保护了
     public static MyApplication getInstance()
     {
         return instance;
