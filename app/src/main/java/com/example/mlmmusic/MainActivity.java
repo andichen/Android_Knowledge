@@ -117,11 +117,7 @@ public class MainActivity extends BaseMusicActivity {
 
 //        ButterKnife.bind(this);
         setTheme(R.style.AppTheme_Launcher);
-        setTitle("钱" +
-                "" +
-                "大掌柜" +
-                "乐乐，我们还是分开吧，我真的没有那么的爱你了，更不想对我们的爱情不忠，我们的未来很渺茫，早点分开是最好的决定，分手的原因在于我" +
-                "是我对不起你，是我太渣了，你也不要来找我了，我也不会见你的，这种爱情不值得你去守护，坚强一点，千万不要为不值得你爱的人掉眼泪这世界没有我你一样很精彩只是陪你的人不再是我了，再也不见了");
+        setTitle("钱大掌柜");
         setRightView(R.mipmap.icon_more);
         showDadaLoad();
         initAdapter();
@@ -236,13 +232,14 @@ public class MainActivity extends BaseMusicActivity {
     private class ProxyHandler implements InvocationHandler {
 
         private Object object;
+
         private ProxyHandler(Object object) {
             this.object = object;
         }
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            System.out.println("Before invoke "  + method.getName());
+            System.out.println("Before invoke " + method.getName());
             Object invoke = method.invoke(object, args); //会调用原方法，不如hello重的sayhello
             System.out.println("After invoke " + method.getName());
             return invoke;
@@ -448,7 +445,7 @@ public class MainActivity extends BaseMusicActivity {
         Context context = getApplicationContext();
         MyApplication application = (MyApplication) getApplication();
 
-        Log.i("application:" , context.toString() + "  ....  " + application.toString());
+        Log.i("application:", context.toString() + "  ....  " + application.toString());
 
 
 //        Context instance = MyApplication.getInstance();
@@ -496,7 +493,6 @@ public class MainActivity extends BaseMusicActivity {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-
 
 
 // 实例化过程和请求网络数据
@@ -569,6 +565,7 @@ public class MainActivity extends BaseMusicActivity {
     public interface GitHubService {
         /**
          * 获取省市台编号
+         *
          * @param token
          * @return
          */

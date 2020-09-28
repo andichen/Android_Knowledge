@@ -81,6 +81,16 @@
         android:paddingRight="10dp"
         android:text="RxJavaActivity" />
 
+    <TextView
+        android:id="@+id/JavaKnowledgeActivity"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/RxJavaActivity"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="JavaKnowledgeActivity" />
+
 
     <com.example.mlmmusic.util.customview.AttachButton
         android:id="@+id/attachbutton_view"
